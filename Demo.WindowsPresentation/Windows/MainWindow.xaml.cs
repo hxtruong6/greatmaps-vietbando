@@ -959,29 +959,63 @@ namespace Demo.WindowsPresentation
             Fields = Lines[0].Split(new char[] { ',' });
 
             int Cols = Fields.GetLength(0);
-            //DataTable dt = new DataTable();
-            ////1st row must be column names; force lower case to ensure matching later on.
+            //1st row must be column names; force lower case to ensure matching later on.
+            // Col4: longitude; col5: latitude
             for (int i = 0; i < Cols; i++)
             {
                //dt.Columns.Add(Fields[i].ToLower(), typeof(string));
-               MessageBox.Show("Col " + i + ": " + Fields[i].ToLower());
+               //MessageBox.Show("Col " + i + ": " + Fields[i].ToLower());
             }
+
+
             //DataRow Row;
-            //for (int i = 1; i < Lines.GetLength(0); i++)
-            //{
-            //   Fields = Lines[i].Split(new char[] { ',' });
-            //   Row = dt.NewRow();
-            //   for (int f = 0; f < Cols; f++)
-            //      Row[f] = Fields[f];
-            //   dt.Rows.Add(Row);
-            //}
-            //dataGridClients.DataSource = dt;
+            //int lineLength = Lines.GetLength(0);
+            int lineLength = 1000;           
+            for (int i = 1; i < lineLength; i++)
+            {
+               Fields = Lines[i].Split(new char[] { ',' });
+               addMakerToGmap(Fields[5], Fields[4]);
+            }
+
          }
          catch (Exception ex)
          {
             MessageBox.Show("Error is " + ex.ToString());
             throw;
          }
+      }
+
+      private void addMakerToGmap(string lat, string lng)
+      {
+         PointLatLng coordinate = new PointLatLng(double.Parse(lat), double.Parse(lng));
+         GMapMarker marker = new GMapMarker(coordinate);
+
+         {
+            Placemark? p = null;
+            //if (checkBoxPlace.IsChecked.Value)
+            //{
+            //   GeoCoderStatusCode status;
+            //   var plret = GMapProviders.GoogleMap.GetPlacemark(coordinate, out status);
+            //   if (status == GeoCoderStatusCode.G_GEO_SUCCESS && plret != null)
+            //   {
+            //      p = plret;
+            //   }
+            //}
+
+            string ToolTipText;
+            if (p != null)
+            {
+               ToolTipText = p.Value.Address;
+            }
+            else
+            {
+               ToolTipText = currentMarker.Position.ToString();
+            }
+
+            marker.Shape = new CustomMarkerDemo(this, marker, ToolTipText);
+            marker.ZIndex = 55;
+         }
+         MainMap.Markers.Add(marker);
       }
    }
 
