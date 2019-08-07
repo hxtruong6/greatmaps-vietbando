@@ -75,7 +75,7 @@ namespace Demo.WindowsForms
             MainMap.Position = new PointLatLng(10.777759, 106.681671);
             MainMap.MinZoom = 0;
             MainMap.MaxZoom = 24;
-            MainMap.Zoom = 9;            
+            MainMap.Zoom = 13;            
 
             //MainMap.ScaleMode = ScaleModes.Fractional;
 
