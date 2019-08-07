@@ -970,7 +970,7 @@ namespace Demo.WindowsPresentation
 
             //DataRow Row;
             //int lineLength = Lines.GetLength(0);
-            int lineLength = 1000;           
+            int lineLength = 1000;
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
