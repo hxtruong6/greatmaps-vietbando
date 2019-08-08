@@ -952,7 +952,7 @@ namespace Demo.WindowsPresentation
             var openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog1.ShowDialog();
             CSVFilePathName = openFileDialog1.FileName;
-            MessageBox.Show(CSVFilePathName);
+            //MessageBox.Show(CSVFilePathName);
             //string CSVFilePathName = @"‪C:\VietBanDo\WayPointDemo.csv";
             string[] Lines = File.ReadAllLines(CSVFilePathName);
             string[] Fields;
@@ -970,13 +970,13 @@ namespace Demo.WindowsPresentation
 
             //DataRow Row;
             //int lineLength = Lines.GetLength(0);
-            int lineLength = 1000;
+            int lineLength = 500;
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
-               addMakerToGmap(Fields[5], Fields[4]);
+               addMakerToGmap(Fields[4], Fields[5]);
             }
-
+            MainMap.ZoomAndCenterMarkers(null);
          }
          catch (Exception ex)
          {
@@ -1016,6 +1016,11 @@ namespace Demo.WindowsPresentation
             marker.ZIndex = 55;
          }
          MainMap.Markers.Add(marker);
+      }
+
+      private void loadAreaClick(object sender, RoutedEventArgs e)
+      {
+
       }
    }
 

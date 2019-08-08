@@ -193,10 +193,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Demo.WindowsForms\Demo.WindowsForms.csproj">
-      <Project>{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}</Project>
-      <Name>Demo.WindowsForms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Demo.WindowsPresentation\Demo.WindowsPresentation.csproj">
       <Project>{83195AEF-0071-471C-9E8B-E67211F5D028}</Project>
       <Name>Demo.WindowsPresentation</Name>

@@ -129,7 +129,8 @@
                <ColumnDefinition Width="29*"/>
             </Grid.ColumnDefinitions>
             <Button Margin="7,6,47.667,0" Name="loadCsvDataBtn" Height="21" VerticalAlignment="Top" Click="loadCsvDataClick">Load Data</Button>
-            <CheckBox HorizontalAlignment="Right" Margin="0,9,0,0" Name="displayDataCheckbox" Width="71" Height="16" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2">Display</CheckBox>
+            <Button Margin="7,32,48,0" Name="loadAreaBtn" Height="21" VerticalAlignment="Top" Click="loadAreaClick">Area</Button>
+            <CheckBox HorizontalAlignment="Right" Margin="0,9,0,0" Name="displayDataCheckbox" Width="71" Height="16" VerticalAlignment="Top" IsChecked="True" Grid.ColumnSpan="2" IsEnabled="False">Display</CheckBox>
          </Grid>
       </GroupBox>
       <GroupBox Header="markers" HorizontalAlignment="Right" Name="showData" Width="169" Margin="0,371,17,0" Height="80" VerticalAlignment="Top">
