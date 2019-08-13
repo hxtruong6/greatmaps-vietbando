@@ -1027,8 +1027,10 @@ namespace Demo.WindowsPresentation
 
       private void loadAreaClick(object sender, RoutedEventArgs e)
       {
-         var shapeFile = "C:\\VietBanDo\\District3Roads.shp";
-         ReadShapeFile(shapeFile);
+         var road = "C:\\VietBanDo\\District3Roads.shp";
+         var district = "C:\\VietBanDo\\District3.shp";
+         ReadShapeFile(road);
+         ReadShapeFile(district);
       }
 
       public void ReadShapeFile(string path)
@@ -1045,6 +1047,9 @@ namespace Demo.WindowsPresentation
                      break;
                   case OgcGeometryType.MultiLineString:
                      DrawMapLine(geo.Coordinates);
+                     break;
+                  case OgcGeometryType.Polygon:
+                     DrawMapPolygon(geo.Coordinates);
                      break;
                   default:
                      Debug.WriteLine(geo.OgcGeometryType);
@@ -1072,15 +1077,12 @@ namespace Demo.WindowsPresentation
       {
          //Declare List for pointlatlang
          List<PointLatLng> pointlatlang = new List<PointLatLng>();
-         List<System.Windows.Point> points = new List<System.Windows.Point>();
          foreach (var coord in coordinates)
          {
-            pointlatlang.Add(new PointLatLng(coord.X, coord.Y));
-            points.Add(new System.Windows.Point(coord.X, coord.Y));
+            pointlatlang.Add(new PointLatLng(coord.Y, coord.X));
          }
          //Declare polygon in gmap
          GMapPolygon polygon = new GMapPolygon(pointlatlang);
-         polygon.CreatePath(points, true);
          MainMap.RegenerateShape(polygon);
          ////setting line style
          //(polygon.Shape as Path).Stroke = Brushes.DarkBlue;
