@@ -1073,6 +1073,12 @@ namespace Demo.WindowsPresentation
          {
             mRoute.ZIndex = -1;
          }
+         MainMap.RegenerateShape(mRoute);
+         // set style
+         mRoute.Shape.SetValue(UIElement.OpacityProperty, 1.0);
+         (mRoute.Shape as System.Windows.Shapes.Path).Stroke = Brushes.MediumVioletRed;
+         (mRoute.Shape as System.Windows.Shapes.Path).StrokeThickness = 3;
+
          MainMap.Markers.Add(mRoute);
       }
 
@@ -1087,10 +1093,12 @@ namespace Demo.WindowsPresentation
          //Declare polygon in gmap
          GMapPolygon polygon = new GMapPolygon(pointlatlang);
          MainMap.RegenerateShape(polygon);
-         ////setting line style
-         //(polygon.Shape as Path).Stroke = Brushes.DarkBlue;
-         //(polygon.Shape as Path).StrokeThickness = 1.5;
-         //(polygon.Shape as Path).Effect = null;
+         //setting line style
+         polygon.Shape.SetValue(UIElement.OpacityProperty, 1.0);
+         (polygon.Shape as System.Windows.Shapes.Path).Stroke = Brushes.DarkRed;
+         (polygon.Shape as System.Windows.Shapes.Path).StrokeThickness = 3.5;
+         (polygon.Shape as System.Windows.Shapes.Path).Effect = null;
+         (polygon.Shape as System.Windows.Shapes.Path).Fill = Brushes.Transparent;
 
          //To add polygon in gmap
          MainMap.Markers.Add(polygon);
