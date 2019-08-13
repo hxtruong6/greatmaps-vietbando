@@ -94,7 +94,7 @@ namespace Demo.WindowsPresentation
          // setup zoom min/max
          sliderZoom.Maximum = MainMap.MaxZoom;
          sliderZoom.Minimum = MainMap.MinZoom;
-         
+
 
          // get position
          textBoxLat.Text = MainMap.Position.Lat.ToString(CultureInfo.InvariantCulture);
@@ -1040,70 +1040,55 @@ namespace Demo.WindowsPresentation
                IGeometry geo = reader.Geometry;
                switch (geo.OgcGeometryType)
                {
-                  case OgcGeometryType.Point:
-                     //Debug.WriteLine(geo.Coordinate);
-                     //Debug.WriteLine(geo.Coordinates);
-
-                     break;
                   case OgcGeometryType.LineString:
-                     Debug.WriteLine(geo.Coordinates.ToString());
-                     var coordinates = geo.Coordinates;
-
-                     //GMapRoute line_layer;
-                     //GMapOverlay line_overlay;
-                     //line_layer = new GMapRoute("single_line");
-                     //line_layer.Stroke = new Pen(Brushes.Black, 2); //width and color of line
-                     //line_overlay.Routes.Add(line_layer);
-                     //gMapControl1.Overlays.Add(line_overlay);
-                     ////Once the layer is created, simply add the two points you want
-                     //line_layer.Points.Add(new PointLatLng(lat, lon));
-                     //line_layer.Points.Add(new PointLatLng(lat2, lon2));                 
-                     ////To force the draw, you need to update the route
-                     //gMapControl1.UpdateRouteLocalPosition(line_layer);
-
-                     //GMapOverlay polyOverlay = new GMapOverlay(MainMap, "polygons");
-                     IList<PointLatLng> points = new List<PointLatLng>();
-                     points.Add(new PointLatLng(-25.969562, 32.585789));
-                     points.Add(new PointLatLng(-25.966205, 32.588171));
-                     GMapRoute gMapRoute = new GMapRoute(points);
-
-                     break;
-                  case OgcGeometryType.Polygon:
-                     break;
-                  case OgcGeometryType.MultiPoint:
+                     DrawMapLine(geo.Coordinates);
                      break;
                   case OgcGeometryType.MultiLineString:
-                     break;
-                  case OgcGeometryType.MultiPolygon:
-                     break;
-                  case OgcGeometryType.GeometryCollection:
-                     break;
-                  case OgcGeometryType.CircularString:
-                     break;
-                  case OgcGeometryType.CompoundCurve:
-                     break;
-                  case OgcGeometryType.CurvePolygon:
-                     break;
-                  case OgcGeometryType.MultiCurve:
-                     break;
-                  case OgcGeometryType.MultiSurface:
-                     break;
-                  case OgcGeometryType.Curve:
-                     break;
-                  case OgcGeometryType.Surface:
-                     break;
-                  case OgcGeometryType.PolyhedralSurface:
-                     break;
-                  case OgcGeometryType.TIN:
+                     DrawMapLine(geo.Coordinates);
                      break;
                   default:
+                     Debug.WriteLine(geo.OgcGeometryType);
                      break;
                }
-               //Debug.WriteLine(geo.GetType());
-               Debug.WriteLine(geo.OgcGeometryType);
             }
+            Debug.WriteLine("Draw shape file done!");
          }
+      }
+      private void DrawMapLine(Coordinate[] coordinates)
+      {
+         List<PointLatLng> pointlatlang = new List<PointLatLng>();
+         foreach (var coord in coordinates)
+         {
+            pointlatlang.Add(new PointLatLng(coord.Y, coord.X));
+         }
+         GMapRoute mRoute = new GMapRoute(pointlatlang);
+         {
+            mRoute.ZIndex = -1;
+         }
+         MainMap.Markers.Add(mRoute);
+      }
 
+      private void DrawMapPolygon(Coordinate[] coordinates)
+      {
+         //Declare List for pointlatlang
+         List<PointLatLng> pointlatlang = new List<PointLatLng>();
+         List<System.Windows.Point> points = new List<System.Windows.Point>();
+         foreach (var coord in coordinates)
+         {
+            pointlatlang.Add(new PointLatLng(coord.X, coord.Y));
+            points.Add(new System.Windows.Point(coord.X, coord.Y));
+         }
+         //Declare polygon in gmap
+         GMapPolygon polygon = new GMapPolygon(pointlatlang);
+         polygon.CreatePath(points, true);
+         MainMap.RegenerateShape(polygon);
+         ////setting line style
+         //(polygon.Shape as Path).Stroke = Brushes.DarkBlue;
+         //(polygon.Shape as Path).StrokeThickness = 1.5;
+         //(polygon.Shape as Path).Effect = null;
+
+         //To add polygon in gmap
+         MainMap.Markers.Add(polygon);
       }
    }
 
