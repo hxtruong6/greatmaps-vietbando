@@ -1046,7 +1046,10 @@ namespace Demo.WindowsPresentation
                      DrawMapLine(geo.Coordinates);
                      break;
                   case OgcGeometryType.MultiLineString:
-                     DrawMapLine(geo.Coordinates);
+                     for (int i = 0; i < geo.NumGeometries; i++)
+                     {
+                        DrawMapLine(geo.GetGeometryN(i).Coordinates);
+                     }
                      break;
                   case OgcGeometryType.Polygon:
                      DrawMapPolygon(geo.Coordinates);
