@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcMapFusion", "Testing\Mvc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapCruncher", "Tools\MapCruncher\MapCruncher.csproj", "{052662DD-CAA7-4E24-98DE-16E51EFE0053}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.WindowsForms", "Demo.WindowsForms\Demo.WindowsForms.csproj", "{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,14 @@ Global
 		{052662DD-CAA7-4E24-98DE-16E51EFE0053}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{052662DD-CAA7-4E24-98DE-16E51EFE0053}.v4.0-Debug|Any CPU.ActiveCfg = v4.0-Debug|Any CPU
 		{052662DD-CAA7-4E24-98DE-16E51EFE0053}.v4.0-Release|Any CPU.ActiveCfg = v4.0-Release|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.v4.0-Debug|Any CPU.ActiveCfg = v4.0-Debug|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.v4.0-Debug|Any CPU.Build.0 = v4.0-Debug|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.v4.0-Release|Any CPU.ActiveCfg = v4.0-Release|Any CPU
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706}.v4.0-Release|Any CPU.Build.0 = v4.0-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +173,7 @@ Global
 		{127D3FB1-5E4A-41F3-9B19-6FA67A3DDCA3} = {37520277-6F32-4663-A126-9E185F23C8E1}
 		{D9756CE8-3C3B-46A6-916F-CB40E4E35978} = {A24009F2-84ED-4F0A-BC1C-8B05F474986A}
 		{052662DD-CAA7-4E24-98DE-16E51EFE0053} = {E51E18A0-B3C2-49AF-9307-E2451D8DA843}
+		{A2E07A76-8B2C-41A2-B23E-EA31AE94D706} = {4071E6E4-D401-4EF2-94B0-6F5257088116}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86028431-51C9-4812-9D94-1A38E7472BCD}
