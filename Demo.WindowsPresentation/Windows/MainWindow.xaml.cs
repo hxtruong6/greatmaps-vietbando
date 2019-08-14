@@ -995,15 +995,11 @@ namespace Demo.WindowsPresentation
       private void addMakerToGmap(string lat, string lng)
       {
          PointLatLng coordinate = new PointLatLng(double.Parse(lat), double.Parse(lng));
-         GMapMarker marker = new GMapMarker(coordinate);
          GMapCircle point = new GMapCircle(coordinate, 5.0f);
          {
-            marker.Shape = new CustomMarkerDemo(this, marker, "");
-            marker.ZIndex = 55;
             point.ZIndex = 55;
             MainMap.RegenerateShape(point);
          }
-         //MainMap.Markers.Add(marker);
          MainMap.Markers.Add(point);
       }
 
