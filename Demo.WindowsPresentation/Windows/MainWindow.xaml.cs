@@ -997,7 +997,7 @@ namespace Demo.WindowsPresentation
          PointLatLng coordinate = new PointLatLng(double.Parse(lat), double.Parse(lng));
          GMapCircle point = new GMapCircle(coordinate, 5.0f);
          {
-            point.ZIndex = 55;
+            point.ZIndex = 20;
             MainMap.RegenerateShape(point);
          }
          MainMap.Markers.Add(point);
