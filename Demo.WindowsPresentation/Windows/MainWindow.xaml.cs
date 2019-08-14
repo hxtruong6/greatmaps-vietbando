@@ -976,12 +976,11 @@ namespace Demo.WindowsPresentation
 
 
             //DataRow Row;
-            //int lineLength = Lines.GetLength(0);
-            int lineLength = 1000;
+            int lineLength = Math.Min(Lines.GetLength(0), 5000);
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
-               addMakerToGmap(Fields[4], Fields[5]);
+               AddMakerToGmap(Fields[4], Fields[5]);
             }
             MainMap.ZoomAndCenterMarkers(null);
          }
@@ -992,7 +991,7 @@ namespace Demo.WindowsPresentation
          }
       }
 
-      private void addMakerToGmap(string lat, string lng)
+      private void AddMakerToGmap(string lat, string lng)
       {
          PointLatLng coordinate = new PointLatLng(double.Parse(lat), double.Parse(lng));
          GMapCircle point = new GMapCircle(coordinate, 5.0f);
