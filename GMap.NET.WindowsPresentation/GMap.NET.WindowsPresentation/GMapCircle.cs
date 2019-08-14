@@ -1,18 +1,21 @@
 ﻿namespace GMap.NET.WindowsPresentation
 {
+   using System;
    using System.Collections.Generic;
+   using System.Linq;
    using System.Windows;
    using System.Windows.Media;
    using System.Windows.Media.Effects;
    using System.Windows.Shapes;
-   class GMapCircle : GMapMarker, IShapable
+   public class GMapCircle : GMapMarker, IShapable
    {
       private double radius;
 
-      public GMapCircle(PointLatLng center, double radius = 1.0)
+      public GMapCircle(PointLatLng center, double radius = 5.0f)
       {
          Points = new List<PointLatLng>();
          Points.Add(center);
+         Points.Add(center); // Treat like a path
          this.radius = radius;
       }
 
@@ -29,18 +32,19 @@
       /// </summary>
       /// <param name="pl"></param>
       /// <returns></returns>
-      public virtual Path CreatePath(List<Point> localPath, bool addBlurEffect)
+      public virtual Path CreatePath(List<Point> localPath, bool addBlurEffect = false)
       {
          // Create a StreamGeometry to use to specify myPath.
          StreamGeometry geometry = new StreamGeometry();
 
          using (StreamGeometryContext ctx = geometry.Open())
          {
-            // Set the begin point of the shape.
-            ctx.BeginFigure(new Point(10, 100), true /* is filled */, true /* is closed */);
-            // Create an arc. Draw the arc from the begin point to 200,100 with the specified parameters.
-            ctx.ArcTo(localPath[0], new Size(radius, radius), 0 /* rotation angle */, true /* is large arc */,
-                      SweepDirection.Counterclockwise, true /* is stroked */, true /* is smooth join */);
+            var c = localPath[0];
+            ctx.BeginFigure(new Point(c.X + radius, c.Y - radius), isFilled: true, isClosed: true);
+            ctx.ArcTo(
+                new Point(c.X + radius * Math.Cos(0.01), c.Y + radius * Math.Sin(0.01)), // need a small angle but large enough that the ellipse is positioned accurately
+                new Size(radius, radius), // docs say it should be 10,10 but in practice it appears that this should be half the desired width/height...
+                0, true, SweepDirection.Counterclockwise, true, true);
          }
 
          // Freeze the geometry (make it unmodifiable)
@@ -52,27 +56,9 @@
          {
             // Specify the shape of the Path using the StreamGeometry.
             myPath.Data = geometry;
-
-            if (addBlurEffect)
-            {
-               BlurEffect ef = new BlurEffect();
-               {
-                  ef.KernelType = KernelType.Gaussian;
-                  ef.Radius = 3.0;
-                  ef.RenderingBias = RenderingBias.Performance;
-               }
-
-               myPath.Effect = ef;
-            }
-
-            myPath.Stroke = Brushes.BlueViolet;
+            myPath.Stroke = Brushes.Green;
+            myPath.Fill = Brushes.GreenYellow;
             myPath.StrokeThickness = 2;
-            myPath.StrokeLineJoin = PenLineJoin.Round;
-            myPath.StrokeStartLineCap = PenLineCap.Triangle;
-            myPath.StrokeEndLineCap = PenLineCap.Square;
-
-            myPath.Fill = Brushes.AliceBlue;
-
             myPath.Opacity = 1.0;
             myPath.IsHitTestVisible = false;
          }
