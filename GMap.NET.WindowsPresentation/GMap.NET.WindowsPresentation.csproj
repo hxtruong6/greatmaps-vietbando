@@ -90,6 +90,7 @@
     <Compile Include="..\GMap.NET.Core\Properties\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="GMap.NET.WindowsPresentation\GMapCircle.cs" />
     <Compile Include="GMap.NET.WindowsPresentation\GMapMarker.cs" />
     <Compile Include="GMap.NET.WindowsPresentation\GMapPolygon.cs" />
     <Compile Include="GMap.NET.WindowsPresentation\GMapRoute.cs" />

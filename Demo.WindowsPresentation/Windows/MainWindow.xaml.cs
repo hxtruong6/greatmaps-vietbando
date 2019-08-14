@@ -998,28 +998,7 @@ namespace Demo.WindowsPresentation
          GMapMarker marker = new GMapMarker(coordinate);
 
          {
-            Placemark? p = null;
-            //if (checkBoxPlace.IsChecked.Value)
-            //{
-            //   GeoCoderStatusCode status;
-            //   var plret = GMapProviders.GoogleMap.GetPlacemark(coordinate, out status);
-            //   if (status == GeoCoderStatusCode.G_GEO_SUCCESS && plret != null)
-            //   {
-            //      p = plret;
-            //   }
-            //}
-
-            string ToolTipText;
-            if (p != null)
-            {
-               ToolTipText = p.Value.Address;
-            }
-            else
-            {
-               ToolTipText = currentMarker.Position.ToString();
-            }
-
-            marker.Shape = new CustomMarkerDemo(this, marker, ToolTipText);
+            marker.Shape = new CustomMarkerDemo(this, marker, "");
             marker.ZIndex = 55;
          }
          MainMap.Markers.Add(marker);
