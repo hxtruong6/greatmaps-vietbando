@@ -58,7 +58,7 @@
     </Window.Resources>
     <Grid>
         <GroupBox Name="mapgroup"  Header="gmap" Margin="12,7,241,12" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-            <src:Map x:Name="MainMap" Zoom="15" MaxZoom="24" MinZoom="1" />
+            <src:Map x:Name="MainMap" Zoom="15" MaxZoom="24" MinZoom="1" OnPositionChanged="MainMap_OnPositionChanged" OnMapZoomChanged="MainMap_OnMapZoomChanged" />
         </GroupBox>
         <GroupBox HorizontalAlignment="Right" Margin="0,7,186,12" VerticalAlignment="Stretch" Header="Zoom">
             <Grid>
@@ -81,7 +81,7 @@
 
                 <Label HorizontalAlignment="Right" Margin="0,6,6,0" Name="label1" Width="33" Height="25.04" VerticalAlignment="Top">type</Label>
                 <CheckBox Margin="6,0,21,6" Name="checkBoxDragMap" IsChecked="True" Height="16.04" VerticalAlignment="Bottom" Checked="checkBoxDragMap_Checked" Unchecked="checkBoxDragMap_Unchecked">Drag Map</CheckBox>
-                <CheckBox Height="16" Margin="6,0,45,28" IsChecked="True" Name="checkBoxCurrentMarker" VerticalAlignment="Bottom" Checked="checkBoxCurrentMarker_Checked" Unchecked="checkBoxCurrentMarker_Unchecked">Current Marker</CheckBox>
+                <CheckBox Height="16" Margin="6,0,45,28" Name="checkBoxCurrentMarker" VerticalAlignment="Bottom" Checked="checkBoxCurrentMarker_Checked" Unchecked="checkBoxCurrentMarker_Unchecked" IsChecked="True">Current Marker</CheckBox>
                 <ComboBox FontSize="12" Height="25.04" Margin="6,37,45,0" Name="comboBoxMode" VerticalAlignment="Top" DropDownClosed="comboBoxMode_DropDownClosed" />
                 <Label Height="25.04" HorizontalAlignment="Right" Margin="0,37,-4,0" Name="label5" VerticalAlignment="Top" Width="43">mode</Label>
                 <Button Height="22" HorizontalAlignment="Right" Name="button7" VerticalAlignment="Bottom" Width="54" Click="button7_Click" Margin="0,0,6,3.06">Save</Button>

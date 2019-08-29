@@ -23,6 +23,7 @@ using NetTopologySuite.IO.ShapeFile.Extended;
 using NetTopologySuite.IO;
 using NetTopologySuite.Geometries;
 using GeoAPI.Geometries;
+using NetTopologySuite.Index.Strtree;
 
 namespace Demo.WindowsPresentation
 {
@@ -64,7 +65,7 @@ namespace Demo.WindowsPresentation
          // config map
          MainMap.MapProvider = GMapProviders.OpenStreetMap;
          MainMap.Position = new PointLatLng(10.777759, 106.681671);
-         MainMap.Zoom = 14;
+         MainMap.Zoom = 16;
          MainMap.ZoomAndCenterMarkers(null);
 
          //MainMap.ScaleMode = ScaleModes.Dynamic;
@@ -950,6 +951,9 @@ namespace Demo.WindowsPresentation
             MainMap.Bearing++;
          }
       }
+      List<Coordinate> gpsCoords = new List<Coordinate>();
+      STRtree<Coordinate> gpsSTRtree = new STRtree<Coordinate>();
+      STRtree<IGeometry> areaSTRtree = new STRtree<IGeometry>();
 
       private void loadCsvDataClick(object sender, RoutedEventArgs e)
       {
@@ -976,10 +980,11 @@ namespace Demo.WindowsPresentation
 
 
             //DataRow Row;
-            int lineLength = Math.Min(Lines.GetLength(0), 5000);
+            int lineLength = Math.Min(Lines.GetLength(0), 500);
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
+               gpsCoords.Add(new Coordinate(double.Parse(Fields[4]), double.Parse(Fields[5])));
                AddMakerToGmap(Fields[4], Fields[5]);
             }
             MainMap.ZoomAndCenterMarkers(null);
@@ -989,6 +994,23 @@ namespace Demo.WindowsPresentation
             MessageBox.Show("Error is " + ex.ToString());
             throw;
          }
+
+         InsertGPSToRSTree(gpsCoords);
+
+         //var center = MainMap.Position;
+         //var viewRect = MainMap.GetRectOfAllMarkers(null);
+      }
+
+      private void InsertGPSToRSTree(List<Coordinate> gpsCoords)
+      {
+         Console.WriteLine("Insert to r tree");
+         Envelope item;
+         foreach (var coord in gpsCoords)
+         {
+            item = new Envelope(coord);
+            gpsSTRtree.Insert(item, coord);
+         }
+         Console.WriteLine(gpsSTRtree);
       }
 
       private void AddMakerToGmap(string lat, string lng)
@@ -1017,28 +1039,35 @@ namespace Demo.WindowsPresentation
             while (reader.Read())
             {
                IGeometry geo = reader.Geometry;
-               switch (geo.OgcGeometryType)
-               {
-                  case OgcGeometryType.LineString:
-                     DrawMapLine(geo.Coordinates);
-                     break;
-                  case OgcGeometryType.MultiLineString:
-                     for (int i = 0; i < geo.NumGeometries; i++)
-                     {
-                        DrawMapLine(geo.GetGeometryN(i).Coordinates);
-                     }
-                     break;
-                  case OgcGeometryType.Polygon:
-                     DrawMapPolygon(geo.Coordinates);
-                     break;
-                  default:
-                     Debug.WriteLine(geo.OgcGeometryType);
-                     break;
-               }
+               areaSTRtree.Insert(geo.EnvelopeInternal, geo);
+               //DrawShape(geo);
             }
             Debug.WriteLine("Draw shape file done!");
          }
       }
+
+      private void DrawShape(IGeometry geo)
+      {
+         switch (geo.OgcGeometryType)
+         {
+            case OgcGeometryType.LineString:
+               DrawMapLine(geo.Coordinates);
+               break;
+            case OgcGeometryType.MultiLineString:
+               for (int i = 0; i < geo.NumGeometries; i++)
+               {
+                  DrawMapLine(geo.GetGeometryN(i).Coordinates);
+               }
+               break;
+            case OgcGeometryType.Polygon:
+               DrawMapPolygon(geo.Coordinates);
+               break;
+            default:
+               Debug.WriteLine(geo.OgcGeometryType);
+               break;
+         }
+      }
+
       private void DrawMapLine(Coordinate[] coordinates)
       {
          List<PointLatLng> pointlatlang = new List<PointLatLng>();
@@ -1079,6 +1108,30 @@ namespace Demo.WindowsPresentation
 
          //To add polygon in gmap
          MainMap.Markers.Add(polygon);
+      }
+      int ttt = 0;
+      private void MainMap_OnPositionChanged(PointLatLng point)
+      {
+         Console.WriteLine("xxxx Position: " + ttt++);
+         Console.WriteLine("xxx ViewArea: " + MainMap.ViewArea);
+         Console.WriteLine("xxx w-h: " + MainMap.ActualWidth + "|" + MainMap.ActualHeight);
+      }
+
+      private void MainMap_OnMapZoomChanged()
+      {
+         Console.WriteLine("xxxx Zoom: " + ttt++);
+         Console.WriteLine("xxx ViewArea: " + MainMap.ViewArea);
+         if (areaSTRtree.IsEmpty) return;
+         Console.WriteLine("xxx w-h: " + MainMap.Width + "|" + MainMap.Height);
+         var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
+         var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
+         var areaQuery = new Envelope(p1, p2);
+         var areaItems = areaSTRtree.Query(areaQuery);
+         foreach (IGeometry item in areaItems)
+         {
+            DrawShape(item);
+            areaSTRtree.Remove(item.EnvelopeInternal, item);
+         }
       }
    }
 
