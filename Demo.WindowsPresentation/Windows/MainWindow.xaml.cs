@@ -984,7 +984,7 @@ namespace Demo.WindowsPresentation
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
-               gps = new Coordinate(double.Parse(Fields[5]), double.Parse(Fields[4]));
+               gps = new Coordinate(double.Parse(Fields[4]), double.Parse(Fields[5]));
                item = new Envelope(gps);
                gpsSTRtree.Insert(item, gps);
                //AddMakerToGmap(gps);
