@@ -971,14 +971,12 @@ namespace Demo.WindowsPresentation
             int Cols = Fields.GetLength(0);
             //1st row must be column names; force lower case to ensure matching later on.
             // Col4: longitude; col5: latitude
-            for (int i = 0; i < Cols; i++)
-            {
-               //dt.Columns.Add(Fields[i].ToLower(), typeof(string));
-               //MessageBox.Show("Col " + i + ": " + Fields[i].ToLower());
-            }
+            //for (int i = 0; i < Cols; i++)
+            //{
+            //   dt.Columns.Add(Fields[i].ToLower(), typeof(string));
+            //   MessageBox.Show("Col " + i + ": " + Fields[i].ToLower());
+            //}
 
-
-            //DataRow Row;
             int lineLength = Math.Min(Lines.GetLength(0), 10000);
             Coordinate gps;
             Envelope item;
@@ -1035,9 +1033,7 @@ namespace Demo.WindowsPresentation
             }
             Debug.WriteLine("Draw shape file done!");
          }
-         var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
-         var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
-         DisplayShapeByRTree(p1, p2);
+
       }
 
       private void DrawShape(IGeometry geo)
@@ -1074,10 +1070,10 @@ namespace Demo.WindowsPresentation
          {
             mRoute.ZIndex = -1;
          }
-         MainMap.RegenerateShape(mRoute);
+         MainMap.RegenerateShape(mRoute, false);
          // set style
-         mRoute.Shape.SetValue(UIElement.OpacityProperty, 1.0);
-         (mRoute.Shape as System.Windows.Shapes.Path).Stroke = Brushes.MediumVioletRed;
+         //mRoute.Shape.SetValue(UIElement.OpacityProperty, 1.0);
+         //(mRoute.Shape as System.Windows.Shapes.Path).Stroke = Brushes.MediumVioletRed;
          (mRoute.Shape as System.Windows.Shapes.Path).StrokeThickness = 3;
 
          MainMap.Markers.Add(mRoute);
@@ -1093,12 +1089,12 @@ namespace Demo.WindowsPresentation
          }
          //Declare polygon in gmap
          GMapPolygon polygon = new GMapPolygon(pointlatlang);
-         MainMap.RegenerateShape(polygon);
+         MainMap.RegenerateShape(polygon, false);
          //setting line style
-         polygon.Shape.SetValue(UIElement.OpacityProperty, 1.0);
-         (polygon.Shape as System.Windows.Shapes.Path).Stroke = Brushes.DarkRed;
-         (polygon.Shape as System.Windows.Shapes.Path).StrokeThickness = 3.5;
-         (polygon.Shape as System.Windows.Shapes.Path).Effect = null;
+         //polygon.Shape.SetValue(UIElement.OpacityProperty, 1.0);
+         //(polygon.Shape as System.Windows.Shapes.Path).Stroke = Brushes.DarkRed;
+         //(polygon.Shape as System.Windows.Shapes.Path).StrokeThickness = 3.5;
+         //(polygon.Shape as System.Windows.Shapes.Path).Effect = null;
          (polygon.Shape as System.Windows.Shapes.Path).Fill = Brushes.Transparent;
 
          //To add polygon in gmap

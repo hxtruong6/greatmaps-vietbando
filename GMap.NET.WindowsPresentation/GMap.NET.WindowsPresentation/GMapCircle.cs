@@ -59,7 +59,7 @@
             myPath.Stroke = Brushes.Green;
             myPath.Fill = Brushes.GreenYellow;
             myPath.StrokeThickness = 2;
-            myPath.Opacity = 1.0;
+            //myPath.Opacity = 1.0;
             myPath.IsHitTestVisible = false;
          }
          return myPath;

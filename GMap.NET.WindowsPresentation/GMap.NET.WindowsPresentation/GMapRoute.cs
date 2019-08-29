@@ -15,7 +15,7 @@ namespace GMap.NET.WindowsPresentation
          get; set;
       }
 
-      Path CreatePath(List<System.Windows.Point> localPath, bool addBlurEffect);
+      Path CreatePath(List<System.Windows.Point> localPath, bool addBlurEffect = false);
    }
 
    public class GMapRoute : GMapMarker, IShapable
@@ -42,7 +42,7 @@ namespace GMap.NET.WindowsPresentation
       /// </summary>
       /// <param name="pl"></param>
       /// <returns></returns>
-      public virtual Path CreatePath(List<System.Windows.Point> localPath, bool addBlurEffect)
+      public virtual Path CreatePath(List<System.Windows.Point> localPath, bool addBlurEffect = false)
       {
          // Create a StreamGeometry to use to specify myPath.
          StreamGeometry geometry = new StreamGeometry();

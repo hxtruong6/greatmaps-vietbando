@@ -75,12 +75,12 @@
       private static void MapProviderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
       {
          GMapControl map = (GMapControl)d;
-         if(map != null && e.NewValue != null)
+         if (map != null && e.NewValue != null)
          {
             Debug.WriteLine("MapType: " + e.OldValue + " -> " + e.NewValue);
 
             RectLatLng viewarea = map.SelectedArea;
-            if(viewarea != RectLatLng.Empty)
+            if (viewarea != RectLatLng.Empty)
             {
                map.Position = new PointLatLng(viewarea.Lat - viewarea.HeightLat / 2, viewarea.Lng + viewarea.WidthLng / 2);
             }
@@ -92,18 +92,18 @@
             map.Core.Provider = e.NewValue as GMapProvider;
 
             map.Copyright = null;
-            if(!string.IsNullOrEmpty(map.Core.Provider.Copyright))
+            if (!string.IsNullOrEmpty(map.Core.Provider.Copyright))
             {
                map.Copyright = new FormattedText(map.Core.Provider.Copyright, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("GenericSansSerif"), 9, Brushes.Navy);
             }
 
-            if(map.Core.IsStarted && map.Core.zoomToArea)
+            if (map.Core.IsStarted && map.Core.zoomToArea)
             {
                // restore zoomrect as close as possible
-               if(viewarea != RectLatLng.Empty && viewarea != map.ViewArea)
+               if (viewarea != RectLatLng.Empty && viewarea != map.ViewArea)
                {
                   int bestZoom = map.Core.GetMaxZoomToFitRect(viewarea);
-                  if(bestZoom > 0 && map.Zoom != bestZoom)
+                  if (bestZoom > 0 && map.Zoom != bestZoom)
                   {
                      map.Zoom = bestZoom;
                   }
@@ -133,14 +133,14 @@
       private static object OnCoerceZoom(DependencyObject o, object value)
       {
          GMapControl map = o as GMapControl;
-         if(map != null)
+         if (map != null)
          {
             double result = (double)value;
-            if(result > map.MaxZoom)
+            if (result > map.MaxZoom)
             {
                result = map.MaxZoom;
             }
-            if(result < map.MinZoom)
+            if (result < map.MinZoom)
             {
                result = map.MinZoom;
             }
@@ -184,38 +184,38 @@
       private static void ZoomPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
       {
          GMapControl map = (GMapControl)d;
-         if(map != null && map.MapProvider.Projection != null)
+         if (map != null && map.MapProvider.Projection != null)
          {
             double value = (double)e.NewValue;
 
             Debug.WriteLine("Zoom: " + e.OldValue + " -> " + value);
 
             double remainder = value % 1;
-            if(map.ScaleMode != ScaleModes.Integer && remainder != 0 && map.ActualWidth > 0)
+            if (map.ScaleMode != ScaleModes.Integer && remainder != 0 && map.ActualWidth > 0)
             {
                bool scaleDown;
 
-               switch(map.ScaleMode)
+               switch (map.ScaleMode)
                {
                   case ScaleModes.ScaleDown:
-                  scaleDown = true;
-                  break;
+                     scaleDown = true;
+                     break;
 
                   case ScaleModes.Dynamic:
-                  scaleDown = remainder > 0.25;
-                  break;
+                     scaleDown = remainder > 0.25;
+                     break;
 
                   default:
-                  scaleDown = false;
-                  break;
+                     scaleDown = false;
+                     break;
                }
 
-               if(scaleDown)
+               if (scaleDown)
                   remainder--;
 
                double scaleValue = Math.Pow(2d, remainder);
                {
-                  if(map.MapScaleTransform == null)
+                  if (map.MapScaleTransform == null)
                   {
                      map.MapScaleTransform = map.lastScaleTransform;
                   }
@@ -239,7 +239,7 @@
                map.Core.Zoom = (int)Math.Floor(value);
             }
 
-            if(map.IsLoaded)
+            if (map.IsLoaded)
             {
                map.ForceUpdateOverlays();
                map.InvalidateVisual(true);
@@ -532,9 +532,9 @@
       {
          get
          {
-            if(mapCanvas == null)
+            if (mapCanvas == null)
             {
-               if(this.VisualChildrenCount > 0)
+               if (this.VisualChildrenCount > 0)
                {
                   Border border = VisualTreeHelper.GetChild(this, 0) as Border;
                   ItemsPresenter items = border.Child as ItemsPresenter;
@@ -563,7 +563,7 @@
 
       public GMapControl()
       {
-         if(!DesignModeInConstruct)
+         if (!DesignModeInConstruct)
          {
             #region -- templates --
 
@@ -588,7 +588,7 @@
             //</ItemsControl>
             #endregion
 
-            if(DataTemplateInstance == null)
+            if (DataTemplateInstance == null)
             {
                DataTemplateInstance = new DataTemplate(typeof(GMapMarker));
                {
@@ -599,7 +599,7 @@
             }
             ItemTemplate = DataTemplateInstance;
 
-            if(ItemsPanelTemplateInstance == null)
+            if (ItemsPanelTemplateInstance == null)
             {
                var factoryPanel = new FrameworkElementFactory(typeof(Canvas));
                {
@@ -613,7 +613,7 @@
             }
             ItemsPanel = ItemsPanelTemplateInstance;
 
-            if(StyleInstance == null)
+            if (StyleInstance == null)
             {
                StyleInstance = new Style();
                {
@@ -638,7 +638,7 @@
             SizeChanged += new SizeChangedEventHandler(GMapControl_SizeChanged);
 
             // by default its internal property, feel free to use your own
-            if(ItemsSource == null)
+            if (ItemsSource == null)
             {
                ItemsSource = Markers;
             }
@@ -665,7 +665,7 @@
       /// </summary>
       public new void InvalidateVisual()
       {
-         if(Core.Refresh != null)
+         if (Core.Refresh != null)
          {
             Core.Refresh.Set();
          }
@@ -679,9 +679,9 @@
       /// <param name="forced"></param>
       public void InvalidateVisual(bool forced)
       {
-         if(forced)
+         if (forced)
          {
-            lock(Core.invalidationLock)
+            lock (Core.invalidationLock)
             {
                Core.lastInvalidation = DateTime.Now;
             }
@@ -697,7 +697,7 @@
       {
          base.OnItemsChanged(e);
 
-         if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+         if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
          {
             ForceUpdateOverlays(e.NewItems);
          }
@@ -714,13 +714,13 @@
       /// <param name="e"></param>
       void GMapControl_Loaded(object sender, RoutedEventArgs e)
       {
-         if(!Core.IsStarted)
+         if (!Core.IsStarted)
          {
-            if(lazyEvents)
+            if (lazyEvents)
             {
                lazyEvents = false;
 
-               if(lazySetZoomToFitRect.HasValue)
+               if (lazySetZoomToFitRect.HasValue)
                {
                   SetZoomToFitRect(lazySetZoomToFitRect.Value);
                   lazySetZoomToFitRect = null;
@@ -729,7 +729,7 @@
             Core.OnMapOpen().ProgressChanged += new ProgressChangedEventHandler(invalidatorEngage);
             ForceUpdateOverlays();
 
-            if(Application.Current != null)
+            if (Application.Current != null)
             {
                loadedApp = Application.Current;
 
@@ -769,9 +769,9 @@
 
          Core.OnMapSizeChanged((int)constraint.Width, (int)constraint.Height);
 
-         if(Core.IsStarted)
+         if (Core.IsStarted)
          {
-            if(IsRotated)
+            if (IsRotated)
             {
                UpdateRotationMatrix();
             }
@@ -788,25 +788,25 @@
       /// <summary>
       /// regenerates shape of route
       /// </summary>
-      public virtual void RegenerateShape(IShapable s)
+      public virtual void RegenerateShape(IShapable s, bool isEffect = false)
       {
          var marker = s as GMapMarker;
 
-         if(s.Points != null && s.Points.Count > 1)
+         if (s.Points != null && s.Points.Count > 1)
          {
             marker.Position = s.Points[0];
 
             var localPath = new List<System.Windows.Point>(s.Points.Count);
             var offset = FromLatLngToLocal(s.Points[0]);
-            foreach(var i in s.Points)
+            foreach (var i in s.Points)
             {
                var p = FromLatLngToLocal(i);
                localPath.Add(new System.Windows.Point(p.X - offset.X, p.Y - offset.Y));
             }
 
-            var shape = s.CreatePath(localPath, true);
+            var shape = s.CreatePath(localPath, isEffect);
 
-            if(marker.Shape is Path)
+            if (marker.Shape is Path)
             {
                (marker.Shape as Path).Data = shape.Data;
             }
@@ -823,17 +823,17 @@
 
       void ForceUpdateOverlays(System.Collections.IEnumerable items)
       {
-         using(Dispatcher.DisableProcessing())
+         using (Dispatcher.DisableProcessing())
          {
             UpdateMarkersOffset();
 
-            foreach(GMapMarker i in items)
+            foreach (GMapMarker i in items)
             {
-               if(i != null)
+               if (i != null)
                {
                   i.ForceUpdateLocalPosition(this);
 
-                  if(i is IShapable)
+                  if (i is IShapable)
                   {
                      RegenerateShape(i as IShapable);
                   }
@@ -848,9 +848,9 @@
       /// </summary>
       void UpdateMarkersOffset()
       {
-         if(MapCanvas != null)
+         if (MapCanvas != null)
          {
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                var tp = MapScaleTransform.Transform(new System.Windows.Point(Core.renderOffset.X, Core.renderOffset.Y));
                MapOverlayTranslateTransform.X = tp.X;
@@ -879,7 +879,7 @@
       /// <param name="g"></param>
       void DrawMap(DrawingContext g)
       {
-         if(MapProvider == EmptyProvider.Instance || MapProvider == null)
+         if (MapProvider == EmptyProvider.Instance || MapProvider == null)
          {
             return;
          }
@@ -888,7 +888,7 @@
          Core.Matrix.EnterReadLock();
          try
          {
-            foreach(var tilePoint in Core.tileDrawingList)
+            foreach (var tilePoint in Core.tileDrawingList)
             {
                Core.tileRect.Location = tilePoint.PosPixel;
                Core.tileRect.OffsetNegative(Core.compensationOffset);
@@ -898,17 +898,17 @@
                   bool found = false;
 
                   Tile t = Core.Matrix.GetTileWithNoLock(Core.Zoom, tilePoint.PosXY);
-                  if(t.NotEmpty)
+                  if (t.NotEmpty)
                   {
-                     foreach(GMapImage img in t.Overlays)
+                     foreach (GMapImage img in t.Overlays)
                      {
-                        if(img != null && img.Img != null)
+                        if (img != null && img.Img != null)
                         {
-                           if(!found)
+                           if (!found)
                               found = true;
 
                            var imgRect = new Rect(Core.tileRect.X + 0.6, Core.tileRect.Y + 0.6, Core.tileRect.Width + 0.6, Core.tileRect.Height + 0.6);
-                           if(!img.IsParent)
+                           if (!img.IsParent)
                            {
                               g.DrawImage(img.Img, imgRect);
                            }
@@ -926,20 +926,20 @@
                         }
                      }
                   }
-                  else if(FillEmptyTiles && MapProvider.Projection is MercatorProjection)
+                  else if (FillEmptyTiles && MapProvider.Projection is MercatorProjection)
                   {
                      #region -- fill empty tiles --
                      int zoomOffset = 1;
                      Tile parentTile = Tile.Empty;
                      long Ix = 0;
 
-                     while(!parentTile.NotEmpty && zoomOffset < Core.Zoom && zoomOffset <= LevelsKeepInMemmory)
+                     while (!parentTile.NotEmpty && zoomOffset < Core.Zoom && zoomOffset <= LevelsKeepInMemmory)
                      {
                         Ix = (long)Math.Pow(2, zoomOffset);
                         parentTile = Core.Matrix.GetTileWithNoLock(Core.Zoom - zoomOffset++, new GMap.NET.GPoint((int)(tilePoint.PosXY.X / Ix), (int)(tilePoint.PosXY.Y / Ix)));
                      }
 
-                     if(parentTile.NotEmpty)
+                     if (parentTile.NotEmpty)
                      {
                         long Xoff = Math.Abs(tilePoint.PosXY.X - (parentTile.Pos.X * Ix));
                         long Yoff = Math.Abs(tilePoint.PosXY.Y - (parentTile.Pos.Y * Ix));
@@ -949,11 +949,11 @@
 
                         // render tile
                         {
-                           foreach(GMapImage img in parentTile.Overlays)
+                           foreach (GMapImage img in parentTile.Overlays)
                            {
-                              if(img != null && img.Img != null && !img.IsParent)
+                              if (img != null && img.Img != null && !img.IsParent)
                               {
-                                 if(!found)
+                                 if (!found)
                                     found = true;
 
                                  g.PushClip(geometry);
@@ -970,13 +970,13 @@
                   }
 
                   // add text if tile is missing
-                  if(!found)
+                  if (!found)
                   {
-                     lock(Core.FailedLoads)
+                     lock (Core.FailedLoads)
                      {
                         var lt = new LoadTask(tilePoint.PosXY, Core.Zoom);
 
-                        if(Core.FailedLoads.ContainsKey(lt))
+                        if (Core.FailedLoads.ContainsKey(lt))
                         {
                            g.DrawRectangle(EmptytileBrush, EmptyTileBorders, new Rect(Core.tileRect.X, Core.tileRect.Y, Core.tileRect.Width, Core.tileRect.Height));
 
@@ -991,11 +991,11 @@
                      }
                   }
 
-                  if(ShowTileGridLines)
+                  if (ShowTileGridLines)
                   {
                      g.DrawRectangle(null, EmptyTileBorders, new Rect(Core.tileRect.X, Core.tileRect.Y, Core.tileRect.Width, Core.tileRect.Height));
 
-                     if(tilePoint.PosXY == Core.centerTileXYLocation)
+                     if (tilePoint.PosXY == Core.centerTileXYLocation)
                      {
                         FormattedText TileText = new FormattedText("CENTER:" + tilePoint.ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, tileTypeface, 16, Brushes.Red);
                         TileText.MaxTextWidth = Core.tileRect.Width;
@@ -1047,7 +1047,7 @@
 
          bmp.Render(obj);
 
-         if(bmp.CanFreeze)
+         if (bmp.CanFreeze)
          {
             bmp.Freeze();
          }
@@ -1066,24 +1066,24 @@
       /// <returns></returns>
       public bool SetZoomToFitRect(RectLatLng rect)
       {
-         if(lazyEvents)
+         if (lazyEvents)
          {
             lazySetZoomToFitRect = rect;
          }
          else
          {
             int maxZoom = Core.GetMaxZoomToFitRect(rect);
-            if(maxZoom > 0)
+            if (maxZoom > 0)
             {
                PointLatLng center = new PointLatLng(rect.Lat - (rect.HeightLat / 2), rect.Lng + (rect.WidthLng / 2));
                Position = center;
 
-               if(maxZoom > MaxZoom)
+               if (maxZoom > MaxZoom)
                {
                   maxZoom = MaxZoom;
                }
 
-               if(Core.Zoom != maxZoom)
+               if (Core.Zoom != maxZoom)
                {
                   Zoom = maxZoom;
                }
@@ -1105,7 +1105,7 @@
       public bool ZoomAndCenterMarkers(int? ZIndex)
       {
          RectLatLng? rect = GetRectOfAllMarkers(ZIndex);
-         if(rect.HasValue)
+         if (rect.HasValue)
          {
             return SetZoomToFitRect(rect.Value);
          }
@@ -1128,7 +1128,7 @@
          double bottom = double.MaxValue;
          IEnumerable<GMapMarker> Overlays;
 
-         if(ZIndex.HasValue)
+         if (ZIndex.HasValue)
          {
             Overlays = ItemsSource.Cast<GMapMarker>().Where(p => p != null && p.ZIndex == ZIndex);
          }
@@ -1137,32 +1137,32 @@
             Overlays = ItemsSource.Cast<GMapMarker>();
          }
 
-         if(Overlays != null)
+         if (Overlays != null)
          {
-            foreach(var m in Overlays)
+            foreach (var m in Overlays)
             {
-               if(m.Shape != null && m.Shape.Visibility == System.Windows.Visibility.Visible)
+               if (m.Shape != null && m.Shape.Visibility == System.Windows.Visibility.Visible)
                {
                   // left
-                  if(m.Position.Lng < left)
+                  if (m.Position.Lng < left)
                   {
                      left = m.Position.Lng;
                   }
 
                   // top
-                  if(m.Position.Lat > top)
+                  if (m.Position.Lat > top)
                   {
                      top = m.Position.Lat;
                   }
 
                   // right
-                  if(m.Position.Lng > right)
+                  if (m.Position.Lng > right)
                   {
                      right = m.Position.Lng;
                   }
 
                   // bottom
-                  if(m.Position.Lat < bottom)
+                  if (m.Position.Lat < bottom)
                   {
                      bottom = m.Position.Lat;
                   }
@@ -1170,7 +1170,7 @@
             }
          }
 
-         if(left != double.MaxValue && right != double.MinValue && top != double.MinValue && bottom != double.MaxValue)
+         if (left != double.MaxValue && right != double.MinValue && top != double.MinValue && bottom != double.MaxValue)
          {
             ret = RectLatLng.FromLTRB(left, top, right, bottom);
          }
@@ -1185,9 +1185,9 @@
       /// <param name="y"></param>
       public void Offset(int x, int y)
       {
-         if(IsLoaded)
+         if (IsLoaded)
          {
-            if(IsRotated)
+            if (IsRotated)
             {
                Point p = new Point(x, y);
                p = rotationMatrixInvert.Transform(p);
@@ -1248,18 +1248,18 @@
          }
          set
          {
-            if(Core.bearing != value)
+            if (Core.bearing != value)
             {
                bool resize = Core.bearing == 0;
                Core.bearing = value;
 
                UpdateRotationMatrix();
 
-               if(value != 0 && value % 360 != 0)
+               if (value != 0 && value % 360 != 0)
                {
                   Core.IsRotated = true;
 
-                  if(Core.tileRectBearing.Size == Core.tileRect.Size)
+                  if (Core.tileRectBearing.Size == Core.tileRect.Size)
                   {
                      Core.tileRectBearing = Core.tileRect;
                      Core.tileRectBearing.Inflate(1, 1);
@@ -1271,12 +1271,12 @@
                   Core.tileRectBearing = Core.tileRect;
                }
 
-               if(resize)
+               if (resize)
                {
                   Core.OnMapSizeChanged((int)ActualWidth, (int)ActualHeight);
                }
 
-               if(Core.IsStarted)
+               if (Core.IsStarted)
                {
                   ForceUpdateOverlays();
                }
@@ -1291,7 +1291,7 @@
       {
          System.Windows.Point ret = new System.Windows.Point(x, y);
 
-         if(IsRotated)
+         if (IsRotated)
          {
             ret = rotationMatrix.Transform(ret);
          }
@@ -1306,7 +1306,7 @@
       {
          System.Windows.Point ret = new System.Windows.Point(x, y);
 
-         if(IsRotated)
+         if (IsRotated)
          {
             ret = rotationMatrixInvert.Transform(ret);
          }
@@ -1317,16 +1317,16 @@
       #region UserControl Events
       protected override void OnRender(DrawingContext drawingContext)
       {
-         if(!Core.IsStarted)
+         if (!Core.IsStarted)
             return;
 
          drawingContext.DrawRectangle(EmptyMapBackground, null, new Rect(RenderSize));
 
-         if(IsRotated)
+         if (IsRotated)
          {
             drawingContext.PushTransform(rotationMatrix);
 
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                drawingContext.PushTransform(MapScaleTransform);
                drawingContext.PushTransform(MapTranslateTransform);
@@ -1349,7 +1349,7 @@
          }
          else
          {
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                drawingContext.PushTransform(MapScaleTransform);
                drawingContext.PushTransform(MapTranslateTransform);
@@ -1379,7 +1379,7 @@
          }
 
          // selection
-         if(!SelectedArea.IsEmpty)
+         if (!SelectedArea.IsEmpty)
          {
             GPoint p1 = FromLatLngToLocal(SelectedArea.LocationTopLeft);
             GPoint p2 = FromLatLngToLocal(SelectedArea.LocationRightBottom);
@@ -1389,7 +1389,7 @@
             long x2 = p2.X;
             long y2 = p2.Y;
 
-            if(SelectionUseCircle)
+            if (SelectionUseCircle)
             {
                drawingContext.DrawEllipse(SelectedAreaFill, SelectionPen, new System.Windows.Point(x1 + (x2 - x1) / 2, y1 + (y2 - y1) / 2), (x2 - x1) / 2, (y2 - y1) / 2);
             }
@@ -1399,13 +1399,13 @@
             }
          }
 
-         if(ShowCenter)
+         if (ShowCenter)
          {
             drawingContext.DrawLine(CenterCrossPen, new System.Windows.Point((ActualWidth / 2) - 5, ActualHeight / 2), new System.Windows.Point((ActualWidth / 2) + 5, ActualHeight / 2));
             drawingContext.DrawLine(CenterCrossPen, new System.Windows.Point(ActualWidth / 2, (ActualHeight / 2) - 5), new System.Windows.Point(ActualWidth / 2, (ActualHeight / 2) + 5));
          }
 
-         if(renderHelperLine)
+         if (renderHelperLine)
          {
             var p = Mouse.GetPosition(this);
 
@@ -1415,7 +1415,7 @@
 
          #region -- copyright --
 
-         if(Copyright != null)
+         if (Copyright != null)
          {
             drawingContext.DrawText(Copyright, new System.Windows.Point(5, ActualHeight - Copyright.Height - 5));
          }
@@ -1448,7 +1448,7 @@
          {
             helperLineOption = value;
             renderHelperLine = (helperLineOption == HelperLineOptions.ShowAlways);
-            if(Core.IsStarted)
+            if (Core.IsStarted)
             {
                InvalidateVisual();
             }
@@ -1462,10 +1462,10 @@
       {
          base.OnKeyUp(e);
 
-         if(HelperLineOption == HelperLineOptions.ShowOnModifierKey)
+         if (HelperLineOption == HelperLineOptions.ShowOnModifierKey)
          {
             renderHelperLine = !(e.IsUp && (e.Key == Key.LeftShift || e.SystemKey == Key.LeftAlt));
-            if(!renderHelperLine)
+            if (!renderHelperLine)
             {
                InvalidateVisual();
             }
@@ -1476,10 +1476,10 @@
       {
          base.OnKeyDown(e);
 
-         if(HelperLineOption == HelperLineOptions.ShowOnModifierKey)
+         if (HelperLineOption == HelperLineOptions.ShowOnModifierKey)
          {
             renderHelperLine = e.IsDown && (e.Key == Key.LeftShift || e.SystemKey == Key.LeftAlt);
-            if(renderHelperLine)
+            if (renderHelperLine)
             {
                InvalidateVisual();
             }
@@ -1500,28 +1500,28 @@
       {
          base.OnMouseWheel(e);
 
-         if(MouseWheelZoomEnabled && (IsMouseDirectlyOver || IgnoreMarkerOnMouseWheel) && !Core.IsDragging)
+         if (MouseWheelZoomEnabled && (IsMouseDirectlyOver || IgnoreMarkerOnMouseWheel) && !Core.IsDragging)
          {
             System.Windows.Point p = e.GetPosition(this);
 
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                p = MapScaleTransform.Inverse.Transform(p);
             }
 
             p = ApplyRotationInversion(p.X, p.Y);
 
-            if(Core.mouseLastZoom.X != (int)p.X && Core.mouseLastZoom.Y != (int)p.Y)
+            if (Core.mouseLastZoom.X != (int)p.X && Core.mouseLastZoom.Y != (int)p.Y)
             {
-               if(MouseWheelZoomType == MouseWheelZoomType.MousePositionAndCenter)
+               if (MouseWheelZoomType == MouseWheelZoomType.MousePositionAndCenter)
                {
                   Core.position = FromLocalToLatLng((int)p.X, (int)p.Y);
                }
-               else if(MouseWheelZoomType == MouseWheelZoomType.ViewCenter)
+               else if (MouseWheelZoomType == MouseWheelZoomType.ViewCenter)
                {
                   Core.position = FromLocalToLatLng((int)ActualWidth / 2, (int)ActualHeight / 2);
                }
-               else if(MouseWheelZoomType == MouseWheelZoomType.MousePositionWithoutCenter)
+               else if (MouseWheelZoomType == MouseWheelZoomType.MousePositionWithoutCenter)
                {
                   Core.position = FromLocalToLatLng((int)p.X, (int)p.Y);
                }
@@ -1531,7 +1531,7 @@
             }
 
             // set mouse position to map center
-            if(MouseWheelZoomType != MouseWheelZoomType.MousePositionWithoutCenter)
+            if (MouseWheelZoomType != MouseWheelZoomType.MousePositionWithoutCenter)
             {
                System.Windows.Point ps = PointToScreen(new System.Windows.Point(ActualWidth / 2, ActualHeight / 2));
                Stuff.SetCursorPos((int)ps.X, (int)ps.Y);
@@ -1539,9 +1539,9 @@
 
             Core.MouseWheelZooming = true;
 
-            if(e.Delta > 0)
+            if (e.Delta > 0)
             {
-               if(!InvertedMouseWheelZooming)
+               if (!InvertedMouseWheelZooming)
                {
                   Zoom = ((int)Zoom) + 1;
                }
@@ -1552,7 +1552,7 @@
             }
             else
             {
-               if(InvertedMouseWheelZooming)
+               if (InvertedMouseWheelZooming)
                {
                   Zoom = ((int)Zoom) + 1;
                }
@@ -1572,11 +1572,11 @@
       {
          base.OnMouseDown(e);
 
-         if(CanDragMap && e.ChangedButton == DragButton)
+         if (CanDragMap && e.ChangedButton == DragButton)
          {
             Point p = e.GetPosition(this);
 
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                p = MapScaleTransform.Inverse.Transform(p);
             }
@@ -1590,7 +1590,7 @@
          }
          else
          {
-            if(!isSelected)
+            if (!isSelected)
             {
                Point p = e.GetPosition(this);
                isSelected = true;
@@ -1607,14 +1607,14 @@
       {
          base.OnMouseUp(e);
 
-         if(isSelected)
+         if (isSelected)
          {
             isSelected = false;
          }
 
-         if(Core.IsDragging)
+         if (Core.IsDragging)
          {
-            if(isDragging)
+            if (isDragging)
             {
                onMouseUpTimestamp = e.Timestamp & Int32.MaxValue;
                isDragging = false;
@@ -1624,9 +1624,9 @@
             }
             Core.EndDrag();
 
-            if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+            if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
             {
-               if(Core.LastLocationInBounds.HasValue)
+               if (Core.LastLocationInBounds.HasValue)
                {
                   Position = Core.LastLocationInBounds.Value;
                }
@@ -1634,21 +1634,21 @@
          }
          else
          {
-            if(e.ChangedButton == DragButton)
+            if (e.ChangedButton == DragButton)
             {
                Core.mouseDown = GPoint.Empty;
             }
 
-            if(!selectionEnd.IsEmpty && !selectionStart.IsEmpty)
+            if (!selectionEnd.IsEmpty && !selectionStart.IsEmpty)
             {
                bool zoomtofit = false;
 
-               if(!SelectedArea.IsEmpty && Keyboard.Modifiers == ModifierKeys.Shift)
+               if (!SelectedArea.IsEmpty && Keyboard.Modifiers == ModifierKeys.Shift)
                {
                   zoomtofit = SetZoomToFitRect(SelectedArea);
                }
 
-               if(OnSelectionChange != null)
+               if (OnSelectionChange != null)
                {
                   OnSelectionChange(SelectedArea, zoomtofit);
                }
@@ -1669,17 +1669,17 @@
          // wpf generates to many events if mouse is over some visual
          // and OnMouseUp is fired, wtf, anyway...
          // http://greatmaps.codeplex.com/workitem/16013
-         if((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp < 55)
+         if ((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp < 55)
          {
             Debug.WriteLine("OnMouseMove skipped: " + ((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp) + "ms");
             return;
          }
 
-         if(!Core.IsDragging && !Core.mouseDown.IsEmpty)
+         if (!Core.IsDragging && !Core.mouseDown.IsEmpty)
          {
             Point p = e.GetPosition(this);
 
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                p = MapScaleTransform.Inverse.Transform(p);
             }
@@ -1688,10 +1688,10 @@
 
 
             // cursor has moved beyond drag tolerance
-            if((e.LeftButton == MouseButtonState.Pressed && DragButton == MouseButton.Left) ||
+            if ((e.LeftButton == MouseButtonState.Pressed && DragButton == MouseButton.Left) ||
                 e.RightButton == MouseButtonState.Pressed && DragButton == MouseButton.Right)
             {
-               if(Math.Abs(p.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(p.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
+               if (Math.Abs(p.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(p.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
                {
                   Core.BeginDrag(Core.mouseDown);
                }
@@ -1699,9 +1699,9 @@
 
          }
 
-         if(Core.IsDragging)
+         if (Core.IsDragging)
          {
-            if(!isDragging)
+            if (!isDragging)
             {
                isDragging = true;
                Debug.WriteLine("IsDragging = " + isDragging);
@@ -1710,7 +1710,7 @@
                Mouse.Capture(this);
             }
 
-            if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+            if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
             {
                // ...
             }
@@ -1718,7 +1718,7 @@
             {
                Point p = e.GetPosition(this);
 
-               if(MapScaleTransform != null)
+               if (MapScaleTransform != null)
                {
                   p = MapScaleTransform.Inverse.Transform(p);
                }
@@ -1731,7 +1731,7 @@
                   Core.Drag(Core.mouseCurrent);
                }
 
-               if(IsRotated || scaleMode != ScaleModes.Integer)
+               if (IsRotated || scaleMode != ScaleModes.Integer)
                {
                   ForceUpdateOverlays();
                }
@@ -1744,7 +1744,7 @@
          }
          else
          {
-            if(isSelected && !selectionStart.IsEmpty && (Keyboard.Modifiers == ModifierKeys.Shift || Keyboard.Modifiers == ModifierKeys.Alt || DisableAltForSelection))
+            if (isSelected && !selectionStart.IsEmpty && (Keyboard.Modifiers == ModifierKeys.Shift || Keyboard.Modifiers == ModifierKeys.Alt || DisableAltForSelection))
             {
                System.Windows.Point p = e.GetPosition(this);
                selectionEnd = FromLocalToLatLng((int)p.X, (int)p.Y);
@@ -1761,7 +1761,7 @@
                }
             }
 
-            if(renderHelperLine)
+            if (renderHelperLine)
             {
                InvalidateVisual(true);
             }
@@ -1777,11 +1777,11 @@
       {
          base.OnStylusDown(e);
 
-         if(TouchEnabled && CanDragMap && !e.InAir)
+         if (TouchEnabled && CanDragMap && !e.InAir)
          {
             Point p = e.GetPosition(this);
 
-            if(MapScaleTransform != null)
+            if (MapScaleTransform != null)
             {
                p = MapScaleTransform.Inverse.Transform(p);
             }
@@ -1799,16 +1799,16 @@
       {
          base.OnStylusUp(e);
 
-         if(TouchEnabled)
+         if (TouchEnabled)
          {
-            if(isSelected)
+            if (isSelected)
             {
                isSelected = false;
             }
 
-            if(Core.IsDragging)
+            if (Core.IsDragging)
             {
-               if(isDragging)
+               if (isDragging)
                {
                   onMouseUpTimestamp = e.Timestamp & Int32.MaxValue;
                   isDragging = false;
@@ -1818,9 +1818,9 @@
                }
                Core.EndDrag();
 
-               if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+               if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
                {
-                  if(Core.LastLocationInBounds.HasValue)
+                  if (Core.LastLocationInBounds.HasValue)
                   {
                      Position = Core.LastLocationInBounds.Value;
                   }
@@ -1838,22 +1838,22 @@
       {
          base.OnStylusMove(e);
 
-         if(TouchEnabled)
+         if (TouchEnabled)
          {
             // wpf generates to many events if mouse is over some visual
             // and OnMouseUp is fired, wtf, anyway...
             // http://greatmaps.codeplex.com/workitem/16013
-            if((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp < 55)
+            if ((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp < 55)
             {
                Debug.WriteLine("OnMouseMove skipped: " + ((e.Timestamp & Int32.MaxValue) - onMouseUpTimestamp) + "ms");
                return;
             }
 
-            if(!Core.IsDragging && !Core.mouseDown.IsEmpty)
+            if (!Core.IsDragging && !Core.mouseDown.IsEmpty)
             {
                Point p = e.GetPosition(this);
 
-               if(MapScaleTransform != null)
+               if (MapScaleTransform != null)
                {
                   p = MapScaleTransform.Inverse.Transform(p);
                }
@@ -1861,15 +1861,15 @@
                p = ApplyRotationInversion(p.X, p.Y);
 
                // cursor has moved beyond drag tolerance
-               if(Math.Abs(p.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(p.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
+               if (Math.Abs(p.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(p.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
                {
                   Core.BeginDrag(Core.mouseDown);
                }
             }
 
-            if(Core.IsDragging)
+            if (Core.IsDragging)
             {
-               if(!isDragging)
+               if (!isDragging)
                {
                   isDragging = true;
                   Debug.WriteLine("IsDragging = " + isDragging);
@@ -1878,7 +1878,7 @@
                   Mouse.Capture(this);
                }
 
-               if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+               if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
                {
                   // ...
                }
@@ -1886,7 +1886,7 @@
                {
                   Point p = e.GetPosition(this);
 
-                  if(MapScaleTransform != null)
+                  if (MapScaleTransform != null)
                   {
                      p = MapScaleTransform.Inverse.Transform(p);
                   }
@@ -1899,7 +1899,7 @@
                      Core.Drag(Core.mouseCurrent);
                   }
 
-                  if(IsRotated)
+                  if (IsRotated)
                   {
                      ForceUpdateOverlays();
                   }
@@ -1921,20 +1921,20 @@
       {
          base.OnManipulationDelta(e);
 
-         if(MultiTouchEnabled && !TouchEnabled)
+         if (MultiTouchEnabled && !TouchEnabled)
          {
             var touchPoints = e.Manipulators.ToArray();
             var element = e.Source as FrameworkElement;
 
-            if(element != null)
+            if (element != null)
             {
                var delta = e.DeltaManipulation;
 
-               if(touchPoints.Length == 1)
+               if (touchPoints.Length == 1)
                {
                   SingleTouchPanMap(new Point(delta.Translation.X, delta.Translation.Y));
                }
-               else if(touchPoints.Length >= 2)
+               else if (touchPoints.Length >= 2)
                {
                   //Point centerOfTouchPoints = e.ManipulationOrigin;
                   Zoom *= Math.Max(delta.Scale.X, delta.Scale.Y);
@@ -1951,22 +1951,22 @@
       /// <param name="deltaPoint">The delta point.</param>
       protected virtual void SingleTouchPanMap(Point deltaPoint)
       {
-         if(MultiTouchEnabled && !TouchEnabled) // redundent check in case this is invoked outside of the manipulation events
+         if (MultiTouchEnabled && !TouchEnabled) // redundent check in case this is invoked outside of the manipulation events
          {
-            if(!Core.IsDragging)
+            if (!Core.IsDragging)
             {
                deltaPoint = ApplyRotationInversion(deltaPoint.X, deltaPoint.Y);
 
                // cursor has moved beyond drag tolerance
-               if(Math.Abs(deltaPoint.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(deltaPoint.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
+               if (Math.Abs(deltaPoint.X - Core.mouseDown.X) * 2 >= SystemParameters.MinimumHorizontalDragDistance || Math.Abs(deltaPoint.Y - Core.mouseDown.Y) * 2 >= SystemParameters.MinimumVerticalDragDistance)
                {
                   Core.BeginDrag(Core.mouseDown);
                }
             }
 
-            if(Core.IsDragging)
+            if (Core.IsDragging)
             {
-               if(!isDragging)
+               if (!isDragging)
                {
                   isDragging = true;
                   Debug.WriteLine("IsDragging = " + isDragging);
@@ -1975,7 +1975,7 @@
                   Mouse.Capture(this);
                }
 
-               if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+               if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
                {
                   // ...
                }
@@ -1989,7 +1989,7 @@
                      Core.Drag(Core.mouseCurrent);
                   }
 
-                  if(IsRotated)
+                  if (IsRotated)
                   {
                      ForceUpdateOverlays();
                   }
@@ -2011,19 +2011,19 @@
       {
          base.OnManipulationCompleted(e);
 
-         if(MultiTouchEnabled && !TouchEnabled)
+         if (MultiTouchEnabled && !TouchEnabled)
          {
             var touchPoints = e.Manipulators.ToArray();
-            if(true) // add bool to starting for single touch vs multi touch
+            if (true) // add bool to starting for single touch vs multi touch
             {
-               if(isSelected)
+               if (isSelected)
                {
                   isSelected = false;
                }
 
-               if(Core.IsDragging)
+               if (Core.IsDragging)
                {
-                  if(isDragging)
+                  if (isDragging)
                   {
                      onMouseUpTimestamp = e.Timestamp & Int32.MaxValue;
                      isDragging = false;
@@ -2033,9 +2033,9 @@
                   }
                   Core.EndDrag();
 
-                  if(BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
+                  if (BoundsOfMap.HasValue && !BoundsOfMap.Value.Contains(Position))
                   {
-                     if(Core.LastLocationInBounds.HasValue)
+                     if (Core.LastLocationInBounds.HasValue)
                      {
                         Position = Core.LastLocationInBounds.Value;
                      }
@@ -2072,15 +2072,15 @@
          GeoCoderStatusCode status = GeoCoderStatusCode.Unknow;
 
          GeocodingProvider gp = MapProvider as GeocodingProvider;
-         if(gp == null)
+         if (gp == null)
          {
             gp = GMapProviders.OpenStreetMap as GeocodingProvider;
          }
 
-         if(gp != null)
+         if (gp != null)
          {
             var pt = gp.GetPoint(keys, out status);
-            if(status == GeoCoderStatusCode.G_GEO_SUCCESS && pt.HasValue)
+            if (status == GeoCoderStatusCode.G_GEO_SUCCESS && pt.HasValue)
             {
                Position = pt.Value;
             }
@@ -2099,15 +2099,15 @@
          GeoCoderStatusCode status = GeoCoderStatusCode.Unknow;
 
          GeocodingProvider gp = MapProvider as GeocodingProvider;
-         if(gp == null)
+         if (gp == null)
          {
             gp = GMapProviders.OpenStreetMap as GeocodingProvider;
          }
 
-         if(gp != null)
+         if (gp != null)
          {
             var pt = gp.GetPoint(keys, out status);
-            if(status == GeoCoderStatusCode.G_GEO_SUCCESS && pt.HasValue)
+            if (status == GeoCoderStatusCode.G_GEO_SUCCESS && pt.HasValue)
             {
                return pt.Value;
             }
@@ -2118,14 +2118,14 @@
 
       public PointLatLng FromLocalToLatLng(int x, int y)
       {
-         if(MapScaleTransform != null)
+         if (MapScaleTransform != null)
          {
             var tp = MapScaleTransform.Inverse.Transform(new System.Windows.Point(x, y));
             x = (int)tp.X;
             y = (int)tp.Y;
          }
 
-         if(IsRotated)
+         if (IsRotated)
          {
             var f = rotationMatrixInvert.Transform(new System.Windows.Point(x, y));
 
@@ -2140,14 +2140,14 @@
       {
          GPoint ret = Core.FromLatLngToLocal(point);
 
-         if(MapScaleTransform != null)
+         if (MapScaleTransform != null)
          {
             var tp = MapScaleTransform.Transform(new System.Windows.Point(ret.X, ret.Y));
             ret.X = (int)tp.X;
             ret.Y = (int)tp.Y;
          }
 
-         if(IsRotated)
+         if (IsRotated)
          {
             var f = rotationMatrix.Transform(new System.Windows.Point(ret.X, ret.Y));
 
@@ -2174,10 +2174,10 @@
             dlg.FilterIndex = 1;
             dlg.RestoreDirectory = true;
 
-            if(dlg.ShowDialog() == true)
+            if (dlg.ShowDialog() == true)
             {
                bool ok = GMaps.Instance.ExportToGMDB(dlg.FileName);
-               if(ok)
+               if (ok)
                {
                   MessageBox.Show("Complete!", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Information);
                }
@@ -2209,12 +2209,12 @@
             dlg.FilterIndex = 1;
             dlg.RestoreDirectory = true;
 
-            if(dlg.ShowDialog() == true)
+            if (dlg.ShowDialog() == true)
             {
                Cursor = Cursors.Wait;
 
                bool ok = GMaps.Instance.ImportFromGMDB(dlg.FileName);
-               if(ok)
+               if (ok)
                {
                   MessageBox.Show("Complete!", "GMap.NET", MessageBoxButton.OK, MessageBoxImage.Information);
                   ReloadMap();
@@ -2247,7 +2247,7 @@
          {
             Core.Position = value;
 
-            if(Core.IsStarted)
+            if (Core.IsStarted)
             {
                ForceUpdateOverlays();
             }
@@ -2293,11 +2293,11 @@
       {
          get
          {
-            if(!IsRotated)
+            if (!IsRotated)
             {
                return Core.ViewArea;
             }
-            else if(Core.Provider.Projection != null)
+            else if (Core.Provider.Projection != null)
             {
                var p = FromLocalToLatLng(0, 0);
                var p2 = FromLocalToLatLng((int)Width, (int)Height);
@@ -2428,13 +2428,13 @@
 
       public virtual void Dispose()
       {
-         if(Core.IsStarted)
+         if (Core.IsStarted)
          {
             Core.OnMapZoomChanged -= new MapZoomChanged(ForceUpdateOverlays);
             Loaded -= new RoutedEventHandler(GMapControl_Loaded);
             Dispatcher.ShutdownStarted -= new EventHandler(Dispatcher_ShutdownStarted);
             SizeChanged -= new SizeChangedEventHandler(GMapControl_SizeChanged);
-            if(loadedApp != null)
+            if (loadedApp != null)
             {
                loadedApp.SessionEnding -= new SessionEndingCancelEventHandler(Current_SessionEnding);
             }
