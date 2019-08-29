@@ -106,6 +106,7 @@ namespace Demo.WindowsPresentation
          // get marker state
          checkBoxCurrentMarker.IsChecked = true;
 
+
          // can drag map
          checkBoxDragMap.IsChecked = MainMap.CanDragMap;
 
@@ -1006,6 +1007,7 @@ namespace Demo.WindowsPresentation
          // lng = X
          PointLatLng coordinate = new PointLatLng(marker.Y, marker.X);
          GMapCircle point = new GMapCircle(coordinate, 5.0f);
+
          {
             point.ZIndex = 20;
             MainMap.RegenerateShape(point);
@@ -1038,7 +1040,6 @@ namespace Demo.WindowsPresentation
 
       private void DrawShape(IGeometry geo)
       {
-
          switch (geo.OgcGeometryType)
          {
             case OgcGeometryType.LineString:
@@ -1131,16 +1132,38 @@ namespace Demo.WindowsPresentation
          }
       }
 
+      //Dictionary<Coordinate, bool> isExsitedOnView = new Dictionary<Coordinate, bool>();
       private void DisplayGPSByRTree(Coordinate p1, Coordinate p2)
       {
          if (gpsSTRtree.IsEmpty) return;
          var gpsQuery = new Envelope(p1, p2);
          var gpsItems = gpsSTRtree.Query(gpsQuery);
+         //MainMap.Markers.Clear();
+         //button10_Click(null, null);
          foreach (Coordinate gps in gpsItems)
          {
-            AddMakerToGmap(gps);
+            //if (!isExsitedOnView.ContainsKey(gps))
+            //{
+               AddMakerToGmap(gps);
+               //isExsitedOnMap.Add(gps, true);
+            //}
+            //else
+            //{
+            //   isExsitedOnView[gps] = true;
+            //}
             gpsSTRtree.Remove(new Envelope(gps), gps);
          }
+
+         //foreach (var item in isExsitedOnView)
+         //{
+         //   if (item.Value == false)
+         //   {
+         //      GMapMarker gps = new GMapMarker(new PointLatLng(item.Key.Y, item.Key.X));
+         //      MainMap.Markers.Remove(gps);
+         //   }
+         //}
+         //isExsitedOnView.Clear();
+         //isExsitedOnView = gpsItems.GroupBy(x => x).Select(x => x.First()).ToDictionary(key => key, value => true);
       }
    }
 
