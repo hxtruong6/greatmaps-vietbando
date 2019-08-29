@@ -38,6 +38,8 @@ namespace Demo.WindowsPresentation
       // zones list
       List<GMapMarker> Circles = new List<GMapMarker>();
 
+      STRtree<Coordinate> gpsSTRtree = new STRtree<Coordinate>();
+      STRtree<IGeometry> areaSTRtree = new STRtree<IGeometry>();
       public MainWindow()
       {
          InitializeComponent();
@@ -951,9 +953,6 @@ namespace Demo.WindowsPresentation
             MainMap.Bearing++;
          }
       }
-      List<Coordinate> gpsCoords = new List<Coordinate>();
-      STRtree<Coordinate> gpsSTRtree = new STRtree<Coordinate>();
-      STRtree<IGeometry> areaSTRtree = new STRtree<IGeometry>();
 
       private void loadCsvDataClick(object sender, RoutedEventArgs e)
       {
@@ -980,42 +979,34 @@ namespace Demo.WindowsPresentation
 
 
             //DataRow Row;
-            int lineLength = Math.Min(Lines.GetLength(0), 500);
+            int lineLength = Math.Min(Lines.GetLength(0), 10000);
+            Coordinate gps;
+            Envelope item;
             for (int i = 1; i < lineLength; i++)
             {
                Fields = Lines[i].Split(new char[] { ',' });
-               gpsCoords.Add(new Coordinate(double.Parse(Fields[4]), double.Parse(Fields[5])));
-               AddMakerToGmap(Fields[4], Fields[5]);
+               gps = new Coordinate(double.Parse(Fields[5]), double.Parse(Fields[4]));
+               item = new Envelope(gps);
+               gpsSTRtree.Insert(item, gps);
+               //AddMakerToGmap(gps);
             }
-            MainMap.ZoomAndCenterMarkers(null);
+            //MainMap.ZoomAndCenterMarkers(null);
          }
          catch (Exception ex)
          {
             MessageBox.Show("Error is " + ex.ToString());
             throw;
          }
-
-         InsertGPSToRSTree(gpsCoords);
-
-         //var center = MainMap.Position;
-         //var viewRect = MainMap.GetRectOfAllMarkers(null);
+         var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
+         var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
+         DisplayGPSByRTree(p1, p2);
       }
 
-      private void InsertGPSToRSTree(List<Coordinate> gpsCoords)
+      private void AddMakerToGmap(Coordinate marker)
       {
-         Console.WriteLine("Insert to r tree");
-         Envelope item;
-         foreach (var coord in gpsCoords)
-         {
-            item = new Envelope(coord);
-            gpsSTRtree.Insert(item, coord);
-         }
-         Console.WriteLine(gpsSTRtree);
-      }
-
-      private void AddMakerToGmap(string lat, string lng)
-      {
-         PointLatLng coordinate = new PointLatLng(double.Parse(lat), double.Parse(lng));
+         // lat = Y
+         // lng = X
+         PointLatLng coordinate = new PointLatLng(marker.Y, marker.X);
          GMapCircle point = new GMapCircle(coordinate, 5.0f);
          {
             point.ZIndex = 20;
@@ -1044,10 +1035,14 @@ namespace Demo.WindowsPresentation
             }
             Debug.WriteLine("Draw shape file done!");
          }
+         var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
+         var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
+         DisplayShapeByRTree(p1, p2);
       }
 
       private void DrawShape(IGeometry geo)
       {
+
          switch (geo.OgcGeometryType)
          {
             case OgcGeometryType.LineString:
@@ -1109,28 +1104,46 @@ namespace Demo.WindowsPresentation
          //To add polygon in gmap
          MainMap.Markers.Add(polygon);
       }
-      int ttt = 0;
       private void MainMap_OnPositionChanged(PointLatLng point)
       {
-         Console.WriteLine("xxxx Position: " + ttt++);
          Console.WriteLine("xxx ViewArea: " + MainMap.ViewArea);
-         Console.WriteLine("xxx w-h: " + MainMap.ActualWidth + "|" + MainMap.ActualHeight);
+         var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
+         var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
+         DisplayShapeByRTree(p1, p2);
+         DisplayGPSByRTree(p1, p2);
       }
 
       private void MainMap_OnMapZoomChanged()
       {
-         Console.WriteLine("xxxx Zoom: " + ttt++);
          Console.WriteLine("xxx ViewArea: " + MainMap.ViewArea);
          if (areaSTRtree.IsEmpty) return;
-         Console.WriteLine("xxx w-h: " + MainMap.Width + "|" + MainMap.Height);
          var p1 = new Coordinate(MainMap.Position.Lng - MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat - MainMap.ViewArea.HeightLat / 2);
          var p2 = new Coordinate(MainMap.Position.Lng + MainMap.ViewArea.WidthLng / 2, MainMap.Position.Lat + MainMap.ViewArea.HeightLat / 2);
+         DisplayShapeByRTree(p1, p2);
+         DisplayGPSByRTree(p1, p2);
+      }
+
+      private void DisplayShapeByRTree(Coordinate p1, Coordinate p2)
+      {
+         if (areaSTRtree.IsEmpty) return;
          var areaQuery = new Envelope(p1, p2);
          var areaItems = areaSTRtree.Query(areaQuery);
          foreach (IGeometry item in areaItems)
          {
             DrawShape(item);
             areaSTRtree.Remove(item.EnvelopeInternal, item);
+         }
+      }
+
+      private void DisplayGPSByRTree(Coordinate p1, Coordinate p2)
+      {
+         if (gpsSTRtree.IsEmpty) return;
+         var gpsQuery = new Envelope(p1, p2);
+         var gpsItems = gpsSTRtree.Query(gpsQuery);
+         foreach (Coordinate gps in gpsItems)
+         {
+            AddMakerToGmap(gps);
+            gpsSTRtree.Remove(new Envelope(gps), gps);
          }
       }
    }
