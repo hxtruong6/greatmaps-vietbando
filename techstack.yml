@@ -1,7 +1,8 @@
 repo_name: hxtruong6/greatmaps-vietbando
 report_id: 870fc3a4be481d069dd097c343db43c4
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-14T05:14:31+00:00'
+timestamp: '2024-01-05T08:45:13+00:00'
 requested_by: hxtruong6
 provider: github
 branch: master
@@ -17,8 +18,8 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/6755/2c45151a4a11d3a3c8e71bb34dd069d6_400x400.png
-  detection_source_url: greatmap/Demo.WindowsForms/Demo.WindowsForms.csproj
-  detection_source: greatmap/Tools/MapCruncher/MapCruncher.csproj
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Demo.WindowsForms/Demo.WindowsForms.csproj
+  detection_source: greatmap/Demo.WindowsForms/Demo.WindowsForms.csproj
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
 - name: C#
@@ -30,6 +31,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: CSS 3
   description: The latest evolution of the Cascading Style Sheets language
@@ -39,6 +41,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/6727/css.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: Java
   description: A concurrent, class-based, object-oriented, language specifically designed
@@ -49,6 +52,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: JavaScript
   description: Lightweight, interpreted, object-oriented language with first-class
@@ -59,6 +63,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: ".NET"
   description: A free, cross-platform, open source developer platform for building
@@ -70,6 +75,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1014/IoPy1dce_400x400.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -82,6 +88,7 @@ tools:
   category: Libraries
   sub_category: Javascript UI Libraries
   image_url: https://img.stackshare.io/service/1021/lxEKmMnB_400x400.jpg
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -95,6 +102,7 @@ tools:
   category: Data Stores
   sub_category: Object Relational Mapper (ORM)
   image_url: https://img.stackshare.io/service/3251/no-img-open-source.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -106,6 +114,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: NuGet
   description: The package manager for .NET
@@ -115,6 +124,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -127,6 +137,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Integrated Development Environment
   image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/GMap.NET
+    vs10.sln
   detection_source: greatmap/GMap.NET vs10.sln
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -139,6 +151,7 @@ tools:
   category: Application Utilities
   sub_category: Data Science Notebooks
   image_url: https://img.stackshare.io/service/4190/fGBUdNf__400x400.jpg
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando
   detection_source: Repo Metadata
 - name: Modernizr
   description: Respond to your user’s browser features
@@ -150,7 +163,7 @@ tools:
   category: Libraries
   sub_category: Javascript Utilities & Libraries
   image_url: https://img.stackshare.io/service/2440/9TeXWBzR_400x400.jpg
-  detection_source_url: greatmap/Testing/MvcMapFusion/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -165,7 +178,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13542/default_0315c6f585d697b995865fc75e63a95bb3ca63bb.png
-  detection_source_url: greatmap/Demo.WindowsPresentation/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Demo.WindowsPresentation/packages.config
   detection_source: greatmap/Demo.WindowsPresentation/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-08 08:00:07.000000000 Z
@@ -180,7 +193,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13330/default_bac2e4378e5818ffa4955b20565842bac60d080a.png
-  detection_source_url: greatmap/Demo.WindowsPresentation/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Demo.WindowsPresentation/packages.config
   detection_source: greatmap/Demo.WindowsPresentation/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-08 08:00:07.000000000 Z
@@ -195,7 +208,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/15559/default_2fbf31f8bf01b1619b7fa5bf594c9d5243f63de6.png
-  detection_source_url: greatmap/Demo.WindowsPresentation/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Demo.WindowsPresentation/packages.config
   detection_source: greatmap/Demo.WindowsPresentation/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-08 08:00:07.000000000 Z
@@ -210,7 +223,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13096/default_9a42ff760d96a634e61dad6d7a7d76e2d1506229.png
-  detection_source_url: greatmap/Testing/MvcMapFusion/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
@@ -275,7 +288,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13119/default_f0c74e534077001eb65a152707758ce46a2dc970.png
-  detection_source_url: greatmap/Testing/MvcMapFusion/packages.config
+  detection_source_url: https://github.com/hxtruong6/greatmaps-vietbando/blob/master/greatmap/Testing/MvcMapFusion/packages.config
   detection_source: greatmap/Testing/MvcMapFusion/packages.config
   last_updated_by: Xuan-Truong Hoang
   last_updated_on: 2019-08-07 01:42:46.000000000 Z
